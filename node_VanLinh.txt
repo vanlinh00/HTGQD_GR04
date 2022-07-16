@@ -1,0 +1,8 @@
+
+- các tiêu chí hiện tại đang sai ( ví tiêu chi bệnh nhân và tiêu chí bác sĩ nếu cho vào )
+    
+	thuật toán sẽ chọn như sau
+              - tiêu chí bệnh nhân: thì sẽ ưu tiên chỗ nào có nhiều bệnh nhân ( sai vì nếu nhiều bệnh nhân mà nhiều bác sĩ thì sẽ không cần chuyển đến )
+              - tiêu chí bác sĩ : thuật toán sẽ ưu chọn chỗ nào có ít bác sĩ ( sai vì nếu ít bác sĩ và ít cả bệnh nhân nữa thì không cần chuyển đến )
+
+- đã khắc phục bằng cách cho trọng số của tiêu chí  bệnh nhân / bác sĩ là 0.7  => thuật toán đã chạy đúng
