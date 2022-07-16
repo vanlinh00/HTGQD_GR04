@@ -1,8 +1,8 @@
 var medicalResourcesModels = require('../models/medicalResources-models')
 
-var chooseCompanyBySstart = [];
-var chooseCompanyBySminus = [];
-var chooseCompanyByCstart = [];
+var chooseRegionBySstart = [];
+var chooseRegionBySminus = [];
+var chooseRegionByCstart = [];
 
 let getAllRegionAndPatient = () => {
     return new Promise((async (resolve, reject) => {
@@ -150,7 +150,7 @@ let getAllRegionAndPatient = () => {
                 for (let i = 0; i < listCriteriaStandardized.length; i++)   // công ty
                 {
           
-                    // tìm Star
+                    // tìm sStar
                     let numPatientsStar = Math.pow((listCriteriaStandardized[i].patient - listAstart[0]), 2);
                     let numDoctorsStar = Math.pow((listCriteriaStandardized[i].doctor - listAstart[1]), 2);
                     let numRatioOfPatientsToDoctorssStar = Math.pow((listCriteriaStandardized[i].ratioOfPatientsToDoctors - listAstart[2]), 2);
@@ -209,8 +209,14 @@ let getAllRegionAndPatient = () => {
 
                     listDataResult.push(datResult);
                 }
+               
+                // xếp thứ tự theo sStar
+                listDataResultForsStar = [];
+                listDataResultForsStar =listDataResult;
+                listDataResultForsStar.sort(function(a, b){return a.sStart_of_region - b.sStart_of_region});
+                
 
-
+                //console.log(listDataResultForsStar);
                 resolve(listDataResult);
             }
             else {
@@ -222,7 +228,10 @@ let getAllRegionAndPatient = () => {
     }));
 };
 
+let chooseRegionBySstartd = () => {
 
+    return chooseRegionBySstart;
+}
 module.exports = {
 
     getAllRegionAndPatient: getAllRegionAndPatient,
