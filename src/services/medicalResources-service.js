@@ -70,8 +70,8 @@ let getAllRegionAndPatient = () => {
                         "name_region": allRegionAndPatient[i].name_region,
                         "patient": ((allRegionAndPatient[i].patient / maxPatient) * 0.1).toFixed(3),
                         "doctor": (maxDoctor / allRegionAndPatient[i].doctor).toFixed(3),
-                        "ratioOfPatientsToDoctors": ((allRegionAndPatient[i].ratioOfPatientsToDoctors / maxRatioOfPatientsToDoctors) * 0.7).toFixed(3),
-                        "p_condition": ((allRegionAndPatient[i].p_condition / maxP_condition) * 0.1).toFixed(3),
+                        "ratioOfPatientsToDoctors": ((allRegionAndPatient[i].ratioOfPatientsToDoctors / maxRatioOfPatientsToDoctors) * 0.5).toFixed(3),
+                        "p_condition": ((allRegionAndPatient[i].p_condition / maxP_condition) * 0.3).toFixed(3),
 
                     }
                     listCriteria.push(criteria);
@@ -243,8 +243,8 @@ let getAllRegionAndPatient = () => {
                     "name_region": "Trọng Số",
                     "patient": "0.1",
                     "doctor": "0.1",
-                    "ratioOfPatientsToDoctors": "0.7",
-                    "p_condition": "0.1"
+                    "ratioOfPatientsToDoctors": "0.5",
+                    "p_condition": "0.3"
                 }
 
 
