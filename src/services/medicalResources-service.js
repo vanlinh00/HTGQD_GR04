@@ -8,7 +8,8 @@ let getAllRegionAndPatient = () => {
     return new Promise((async (resolve, reject) => {
         try {
             var allRegionAndPatientBase = await medicalResourcesModels.getAllRegionAndPatient();
-
+                 
+ 
             if (allRegionAndPatientBase != undefined) {
 
                 // tính số bệnh nhân / bác sĩ 
@@ -25,6 +26,8 @@ let getAllRegionAndPatient = () => {
                     }
                     allRegionAndPatient.push(criteria);
 
+  
+
                     // tính số bác sĩ cần và bác sĩ thừa
 
                     var c = parseInt(allRegionAndPatientBase[i].patient / 100);
@@ -33,18 +36,18 @@ let getAllRegionAndPatient = () => {
                     if (checkDoctor < 0)   // thiếu bác sĩ or bác sĩ cần
                     {
                         medicalResourcesModels.updateEpidemicTatusNumdoctorsNeeded(allRegionAndPatientBase[i].id, checkDoctor * -1);
-                        medicalResourcesModels.updateEpidemicTatusNumShortageDoctors(allRegionAndPatientBase[i].id, 0);
+                        medicalResourcesModels.updateEpidemicTatusNumRedundantDoctor(allRegionAndPatientBase[i].id, 0);
                     }
 
                     if (checkDoctor > 0)  // thừa bác sĩ
                     {
-                        medicalResourcesModels.updateEpidemicTatusNumShortageDoctors(allRegionAndPatientBase[i].id, checkDoctor);
+                        medicalResourcesModels.updateEpidemicTatusNumRedundantDoctor(allRegionAndPatientBase[i].id, checkDoctor);
                         medicalResourcesModels.updateEpidemicTatusNumdoctorsNeeded(allRegionAndPatientBase[i].id, 0);
                     }
 
-
                 }
 
+      
                 // bước 1: chuẩn hóa
                 // bước 2 nhân trọng số
                 var maxPatient = 0;
@@ -68,23 +71,25 @@ let getAllRegionAndPatient = () => {
                         "patient": ((allRegionAndPatient[i].patient / maxPatient) * 0.1).toFixed(3),
                         "doctor": (maxDoctor / allRegionAndPatient[i].doctor).toFixed(3),
                         "ratioOfPatientsToDoctors": ((allRegionAndPatient[i].ratioOfPatientsToDoctors / maxRatioOfPatientsToDoctors) * 0.7).toFixed(3),
-                        "p_condition": ((allRegionAndPatient[i].p_condition / maxP_condition) * 0.2).toFixed(3),
+                        "p_condition": ((allRegionAndPatient[i].p_condition / maxP_condition) * 0.1).toFixed(3),
 
                     }
                     listCriteria.push(criteria);
                 }
 
-
+             
                 // doctor là thuộc tính giá tri, nếu doctor càng ít thì càng phải điều đến vùng đấy
                 // chuẩn hóa tiêu chi doctor về miền 0 _1 
                 maxDoctor = 0;
                 for (let i = 0; i < listCriteria.length; i++) {
-                    maxDoctor = (maxDoctor < listCriteria[i].doctor) ? listCriteria[i].doctor : maxDoctor;
+                    maxDoctor = (maxDoctor < parseFloat(listCriteria[i].doctor)) ? listCriteria[i].doctor : maxDoctor;
+                   
                 }
 
                 var listCriteriaStandardized = [];
 
                 for (let i = 0; i < listCriteria.length; i++) {
+
                     var criteria = {
                         "id": listCriteria[i].id,
                         "id_region": listCriteria[i].id_region,
@@ -95,10 +100,11 @@ let getAllRegionAndPatient = () => {
                         "p_condition": listCriteria[i].p_condition,
 
                     }
+                    
                     listCriteriaStandardized.push(criteria);
                 }
 
-                // console.log(listCriteriaStandardized);
+               // console.log(listCriteriaStandardized);
 
                 // bước 3 tìm A* và A-
 
@@ -204,14 +210,16 @@ let getAllRegionAndPatient = () => {
                         "sStart_of_region": sStar[i],
                         "sMinus_of_region": sMinus[i],
                         "cStars_of_region": cStars[i],
+                        "num_doctors_needed": allRegionAndPatientBase[i].num_doctors_needed,
+                        "num_redundant_doctor": allRegionAndPatientBase[i].num_redundant_doctor,
 
                     }
 
                     listDataResult.push(datResult);
                 }
 
-               var listDataResultHaveAStartAndAmunisAndWeight =[];
-               listDataResultHaveAStartAndAmunisAndWeight = listDataResult.slice();
+                var listDataResultHaveAStartAndAmunisAndWeight = [];
+                listDataResultHaveAStartAndAmunisAndWeight = listDataResult.slice();
 
                 // bước này chỉ cho thằng A* VÀ A- và trọng sô vào array để in ra thôi
                 var dataAstart = {
@@ -236,16 +244,13 @@ let getAllRegionAndPatient = () => {
                     "patient": "0.1",
                     "doctor": "0.1",
                     "ratioOfPatientsToDoctors": "0.7",
-                    "p_condition":"0.1"
+                    "p_condition": "0.1"
                 }
 
 
                 listDataResultHaveAStartAndAmunisAndWeight.push(dataAstart);
                 listDataResultHaveAStartAndAmunisAndWeight.push(dataAmunis);
                 listDataResultHaveAStartAndAmunisAndWeight.push(dataWeight);
-              
-
-
 
                 // xếp thứ tự theo sStar
                 chooseRegionBySstart = listDataResult.slice();
@@ -261,7 +266,7 @@ let getAllRegionAndPatient = () => {
                 chooseRegionByCstart = listDataResult.slice();
                 chooseRegionByCstart.sort(function (a, b) { return a.cStars_of_region - b.cStars_of_region });
 
-                resolve(listDataResultHaveAStartAndAmunisAndWeight);
+            resolve(listDataResultHaveAStartAndAmunisAndWeight);
 
             }
             else {
@@ -279,18 +284,152 @@ let chooseRegionBySstartFunsion = () => {
 }
 let chooseRegionBySminusFunsion = () => {
 
-    return chooseRegionBySminus.reverse();
+    return chooseRegionBySminus;
 }
 
 let chooseRegionByCstartFunsion = () => {
 
-    return chooseRegionByCstart.reverse();
+    return chooseRegionByCstart;
 }
+
+
+var checkMaxListRegionRedundantDoctor = [];
+
+let distributeMedical = (chooseRegionBySstartFormControl) => {
+    return new Promise((async (resolve, reject) => {
+        try {
+            let allRegionAndPatient = await medicalResourcesModels.getAllRegionAndPatient();
+            if (allRegionAndPatient != null) {
+
+
+                var listRegionNeedDoctor = [];        // bác sĩ thiếu
+                var listRegionRedundantDoctor = [];   // bác sĩ thừa
+
+                for (let i = 0; i < allRegionAndPatient.length; i++) {
+                    if (allRegionAndPatient[i].num_doctors_needed == 0 && allRegionAndPatient[i].num_redundant_doctor == 0)  // trường hơp đủ bác sĩ
+                    {
+                        continue
+                    } else {
+
+                        if (allRegionAndPatient[i].num_doctors_needed == 0) // thừa bác sĩ
+                        {
+                            listRegionRedundantDoctor.push(allRegionAndPatient[i]);
+
+                        } else {                                          // thiếu bác sĩ
+                            listRegionNeedDoctor.push(allRegionAndPatient[i]);
+                        }
+                    }
+
+                }
+
+                //  mảng global để dựa vào cái này cập nhận max liên tục
+                checkMaxListRegionRedundantDoctor = listRegionRedundantDoctor.slice();
+
+                // chuyển bác sĩ
+                var transferMissingDoctor = [];
+                var region = null;
+
+                if (checkMaxListRegionRedundantDoctorFunsion() != null) {
+                    for (let i = 0; i < chooseRegionBySstartFormControl.length; i++) {
+
+                        if (chooseRegionBySstartFormControl[i].num_redundant_doctor == 0) {
+
+                            sortAndReverseListRegionRedundantDoctor();
+
+                            if (checkMaxListRegionRedundantDoctorFunsion() != null) {
+                            
+                                var num_redundant_doctor = 0;
+                                var recevied_from_region = "";
+
+                                num_redundant_doctor = (parseInt(checkMaxListRegionRedundantDoctorFunsion().num_redundant_doctor / 2) > chooseRegionBySstartFormControl[i].num_doctors_needed) ? chooseRegionBySstartFormControl[i].num_doctors_needed : parseInt(checkMaxListRegionRedundantDoctorFunsion().num_redundant_doctor / 2);
+
+                                recevied_from_region = checkMaxListRegionRedundantDoctorFunsion().name_region;
+
+                                upDateMaxListRegionRedundantDoctorFunsion(checkMaxListRegionRedundantDoctorFunsion().num_redundant_doctor-num_redundant_doctor);
+
+                                sortAndReverseListRegionRedundantDoctor();
+                                
+                                // bác sĩ cần
+                                region = {
+                                    "id_region": chooseRegionBySstartFormControl[i].id_region,
+                                    "name_region": chooseRegionBySstartFormControl[i].name_region,
+                                    "num_doctors_needed": chooseRegionBySstartFormControl[i].num_doctors_needed,
+                                    "num_redundant_doctor": 0,
+                                    // "recevied_from_region": (parseInt(checkMaxListRegionRedundantDoctorFunsion().num_redundant_doctor / 2) == 0) ? "không có vùng nào thừa" : checkMaxListRegionRedundantDoctorFunsion().name_region,
+                                    "recevied_from_region": recevied_from_region,
+                                    "amount": num_redundant_doctor
+                                }
+
+                            } else {
+                                region = {
+                                    "id_region": chooseRegionBySstartFormControl[i].id_region,
+                                    "name_region": chooseRegionBySstartFormControl[i].name_region,
+                                    "num_doctors_needed": chooseRegionBySstartFormControl[i].num_doctors_needed,
+                                    "num_redundant_doctor": 0,
+                                    // "recevied_from_region": (parseInt(checkMaxListRegionRedundantDoctorFunsion().num_redundant_doctor / 2) == 0) ? "không có vùng nào thừa" : checkMaxListRegionRedundantDoctorFunsion().name_region,
+                                    "recevied_from_region": "Không còn",
+                                    "amount": 0,
+                                }
+
+                            }
+
+                        }
+                        else {
+
+                            // bác sĩ thừa
+                            region = {
+                                "id_region": chooseRegionBySstartFormControl[i].id_region,
+                                "name_region": chooseRegionBySstartFormControl[i].name_region,
+                                "num_doctors_needed": 0,
+                                "num_redundant_doctor": chooseRegionBySstartFormControl[i].num_redundant_doctor,
+                                "recevied_from_region": "Đang thừa",
+                                "amount": 0,
+                            }
+
+                        }
+
+
+                        transferMissingDoctor.push(region)
+                    }
+
+                }
+                resolve(transferMissingDoctor);
+            }
+            else {
+                resolve(null);
+            }
+        } catch (e) {
+            reject(e);
+        }
+    }));
+}
+
+
+let sortAndReverseListRegionRedundantDoctor = () => {
+    checkMaxListRegionRedundantDoctor.sort(function (a, b) { return a.num_redundant_doctor - b.num_redundant_doctor });
+    checkMaxListRegionRedundantDoctor.reverse();
+
+}
+
+let checkMaxListRegionRedundantDoctorFunsion = () => {
+
+    return (checkMaxListRegionRedundantDoctor[0].num_redundant_doctor <= 0) ? null : checkMaxListRegionRedundantDoctor[0];
+}
+
+let upDateMaxListRegionRedundantDoctorFunsion = (num_redundant_doctor) => {
+
+    return checkMaxListRegionRedundantDoctor[0].num_redundant_doctor = num_redundant_doctor;
+}
+
+
+
+
 module.exports = {
 
     getAllRegionAndPatient: getAllRegionAndPatient,
     chooseRegionBySstartFunsion: chooseRegionBySstartFunsion,
     chooseRegionBySminusFunsion: chooseRegionBySminusFunsion,
     chooseRegionByCstartFunsion: chooseRegionByCstartFunsion,
+    distributeMedical: distributeMedical,
 
 }

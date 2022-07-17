@@ -164,23 +164,20 @@
       <div class="card top-selling overflow-auto">
 
         <div class="card-body pb-0">
-          <h5 class="card-title">Sử Dụng Phương Pháp TOP-SIS</h5>
+          <h5 class="card-title">CÁCH PHÂN BỔ NGUỒN LỰC Ý TẾ</h5>
           <table class="table table-borderless">
             <thead>
               <tr>
                 <th scope="col">STT</th>
                 <th scope="col">Vùng</th>
-                <th scope="col">Số Bệnh Nhân</th>
-                <th scope="col">Số Bác Sĩ</th>
-                <th scope="col">TL Bệnh nhân/ Bác sĩ</th>
-                <th scope="col">TT Bệnh Nhân</th>
-                <th scope="col">S*</th>
-                <th scope="col">S-</th>
-                <th scope="col">C*</th>
-              </tr>
+                <th scope="col">Số Bác Sĩ Thừa</th>
+                <th scope="col">Số Bác Sĩ Thiếu</th>
+                <th scope="col">Nhận Từ Vùng</th>
+                <th scope="col">Số Lượng</th>
             </thead>
             <tbody>
-              <% if(getAllRegionAndPatient.length!=0){ var i=1; getAllRegionAndPatient.forEach(function(data){ %>
+
+              <% if(distributeMedical.length!=0){ var i=1; distributeMedical.forEach(function(data){ %>
                 <tr>
                   <td>
                     <%=i%>
@@ -189,25 +186,16 @@
                     <%=data.name_region %>
                   </td>
                   <td>
-                    <%=data.patient%>
+                    <%=data.num_redundant_doctor%>
                   </td>
                   <td>
-                    <%=data.doctor%>
+                    <%=data.num_doctors_needed%>
                   </td>
                   <td>
-                    <%=data.ratioOfPatientsToDoctors%>
+                    <%=data.recevied_from_region%>
                   </td>
                   <td>
-                    <%=data.p_condition%>
-                  </td>
-                  <td>
-                    <%=data.sStart_of_region%>
-                  </td>
-                  <td>
-                    <%=data.sMinus_of_region%>
-                  </td>
-                  <td>
-                    <%=data.cStars_of_region%>
+                    <%=data.amount%>
                   </td>
                 </tr>
                 <% i++; }) %>
@@ -224,101 +212,6 @@
 
       </div>
 
-
-
-      <div class="card">
-        <div class="card-body">
-          <h1 class="card-title">Kết Quả</h1>
-
-          <!-- Accordion without outline borders -->
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h5 class="accordion-header" id="flush-headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                  CHỌN THEO S*
-                </button>
-              </h5>
-              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                data-bs-parent="#accordionFlushExample">
-
-                <% if(chooseRegionBySstartd.length!=0){ var i=1; chooseRegionBySstartd.forEach(function(data){ %>
-
-                  <div class="accordion-body">
-                    <td>
-                      <%=i%>:
-                    </td>
-                    <td>
-                      <%=data.name_region %>
-                    </td>
-                  </div>
-                  <% i++; }) %>
-                    <% } else{ %>
-                      <% } %>
-
-                        <a href="/chooseRegionBySstart">xem chi tiết</a>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                  CHỌN THEO S-
-                </button>
-
-              </h2>
-              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                data-bs-parent="#accordionFlushExample">
-
-                
-                <% if(chooseRegionBySminusReversed.length!=0){ var i=1; chooseRegionBySminusReversed.forEach(function(data){ %>
-                  <div class="accordion-body">
-                    <td>
-                      <%=i%>:
-                    </td>
-                    <td>
-                      <%=data.name_region %>
-                    </td>
-                  </div>
-
-                  <% i++; }) %>
-                    <% } else{ %>
-                      <% } %>
-
-
-                <a href="/chooseRegionBySminus">xem chi tiết</a>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                  CHỌN THEO C*
-                </button>
-              </h2>
-              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                data-bs-parent="#accordionFlushExample">
-                  
-                <% if(chooseRegionByCstartReversed.length!=0){ var i=1; chooseRegionByCstartReversed.forEach(function(data){ %>
-                  <div class="accordion-body">
-                    <td>
-                      <%=i%>:
-                    </td>
-                    <td>
-                      <%=data.name_region %>
-                    </td>
-                  </div>
-                  <% i++; }) %>
-                    <% } else{ %>
-                      <% } %>
-
-                <a href="/chooseRegionByCstart">xem chi tiết</a>
-              </div>
-            </div>
-          </div><!-- End Accordion without outline borders -->
-
-        </div>
-      </div>
     </section>
 
   </main><!-- End #main -->
