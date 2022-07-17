@@ -75,7 +75,7 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Nhóm 6</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">Nhóm 4</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -164,7 +164,7 @@
       <div class="card top-selling overflow-auto">
 
         <div class="card-body pb-0">
-          <h5 class="card-title">Bảng Quyết định Phương pháp TOP-SIS</h5>
+          <h5 class="card-title">Sử Dụng Phương Pháp TOP-SIS</h5>
           <table class="table table-borderless">
             <thead>
               <tr>
@@ -241,9 +241,22 @@
               </h5>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                 class. This is the first item's accordion body.</div>
-                <a href="https://xuanthulab.net">xem chi tiết</a>
+
+                <% if(chooseRegionBySstartd.length!=0){ var i=1; chooseRegionBySstartd.forEach(function(data){ %>
+
+                  <div class="accordion-body">
+                    <td>
+                      <%=i%>:
+                    </td>
+                    <td>
+                      <%=data.name_region %>
+                    </td>
+                  </div>
+                  <% i++; }) %>
+                    <% } else{ %>
+                      <% } %>
+
+                        <a href="https://xuanthulab.net">xem chi tiết</a>
               </div>
             </div>
             <div class="accordion-item">
@@ -256,9 +269,23 @@
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                 data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                  <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this
-                  being filled with some actual content.</div>
+
+                
+                <% if(chooseRegionBySminusReversed.length!=0){ var i=1; chooseRegionBySminusReversed.forEach(function(data){ %>
+                  <div class="accordion-body">
+                    <td>
+                      <%=i%>:
+                    </td>
+                    <td>
+                      <%=data.name_region %>
+                    </td>
+                  </div>
+
+                  <% i++; }) %>
+                    <% } else{ %>
+                      <% } %>
+
+
                 <a href="https://xuanthulab.net">xem chi tiết</a>
               </div>
             </div>
@@ -271,10 +298,20 @@
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
                 data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                  <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
-                  happening here in terms of content, but just filling up the space to make it look, at least at first
-                  glance, a bit more representative of how this would look in a real-world application.</div>
+                  
+                <% if(chooseRegionByCstartReversed.length!=0){ var i=1; chooseRegionByCstartReversed.forEach(function(data){ %>
+                  <div class="accordion-body">
+                    <td>
+                      <%=i%>:
+                    </td>
+                    <td>
+                      <%=data.name_region %>
+                    </td>
+                  </div>
+                  <% i++; }) %>
+                    <% } else{ %>
+                      <% } %>
+
                 <a href="https://xuanthulab.net">xem chi tiết</a>
               </div>
             </div>

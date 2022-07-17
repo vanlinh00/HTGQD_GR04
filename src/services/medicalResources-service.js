@@ -15,8 +15,8 @@ let getAllRegionAndPatient = () => {
                 var allRegionAndPatient = [];
                 for (let i = 0; i < allRegionAndPatientBase.length; i++) {
                     var criteria = {
-                        "id":allRegionAndPatientBase[i].id,
-                        "id_region":allRegionAndPatientBase[i].id_region,
+                        "id": allRegionAndPatientBase[i].id,
+                        "id_region": allRegionAndPatientBase[i].id_region,
                         "name_region": allRegionAndPatientBase[i].name_region,
                         "patient": allRegionAndPatientBase[i].patient,
                         "doctor": allRegionAndPatientBase[i].doctor,
@@ -32,16 +32,16 @@ let getAllRegionAndPatient = () => {
 
                     if (checkDoctor < 0)   // thiếu bác sĩ or bác sĩ cần
                     {
-                        medicalResourcesModels.updateEpidemicTatusNumdoctorsNeeded(allRegionAndPatientBase[i].id, checkDoctor*-1);
-                        medicalResourcesModels.updateEpidemicTatusNumShortageDoctors(allRegionAndPatientBase[i].id,0);
+                        medicalResourcesModels.updateEpidemicTatusNumdoctorsNeeded(allRegionAndPatientBase[i].id, checkDoctor * -1);
+                        medicalResourcesModels.updateEpidemicTatusNumShortageDoctors(allRegionAndPatientBase[i].id, 0);
                     }
-                
+
                     if (checkDoctor > 0)  // thừa bác sĩ
                     {
                         medicalResourcesModels.updateEpidemicTatusNumShortageDoctors(allRegionAndPatientBase[i].id, checkDoctor);
                         medicalResourcesModels.updateEpidemicTatusNumdoctorsNeeded(allRegionAndPatientBase[i].id, 0);
                     }
-                    
+
 
                 }
 
@@ -62,8 +62,8 @@ let getAllRegionAndPatient = () => {
                 var listCriteria = [];
                 for (let i = 0; i < allRegionAndPatient.length; i++) {
                     var criteria = {
-                        "id":allRegionAndPatient[i].id,
-                        "id_region":allRegionAndPatient[i].id_region,
+                        "id": allRegionAndPatient[i].id,
+                        "id_region": allRegionAndPatient[i].id_region,
                         "name_region": allRegionAndPatient[i].name_region,
                         "patient": ((allRegionAndPatient[i].patient / maxPatient) * 0.1).toFixed(3),
                         "doctor": (maxDoctor / allRegionAndPatient[i].doctor).toFixed(3),
@@ -86,8 +86,8 @@ let getAllRegionAndPatient = () => {
 
                 for (let i = 0; i < listCriteria.length; i++) {
                     var criteria = {
-                        "id":listCriteria[i].id,
-                        "id_region":listCriteria[i].id_region,
+                        "id": listCriteria[i].id,
+                        "id_region": listCriteria[i].id_region,
                         "name_region": listCriteria[i].name_region,
                         "patient": listCriteria[i].patient,
                         "doctor": ((listCriteria[i].doctor / maxDoctor) * 0.1).toFixed(3),
@@ -149,7 +149,7 @@ let getAllRegionAndPatient = () => {
 
                 for (let i = 0; i < listCriteriaStandardized.length; i++)   // công ty
                 {
-          
+
                     // tìm sStar
                     let numPatientsStar = Math.pow((listCriteriaStandardized[i].patient - listAstart[0]), 2);
                     let numDoctorsStar = Math.pow((listCriteriaStandardized[i].doctor - listAstart[1]), 2);
@@ -159,21 +159,21 @@ let getAllRegionAndPatient = () => {
                     let ressStar = (Math.pow(sumsStar, 1 / 2)).toFixed(3);
                     sStar.push(ressStar);
 
-                     // tìm SMinus
-                     let numPatientsMinus = Math.pow((listCriteriaStandardized[i].patient - listAminus[0]), 2);
-                     let numDoctorsMinus = Math.pow((listCriteriaStandardized[i].doctor - listAminus[1]), 2);
-                     let numRatioOfPatientsToDoctorssMinus = Math.pow((listCriteriaStandardized[i].ratioOfPatientsToDoctors - listAminus[2]), 2);
-                     let numP_conditionsMinus = Math.pow((listCriteriaStandardized[i].p_condition - listAminus[3]), 2);
-                     let sumsMinus = numPatientsMinus + numDoctorsMinus + numRatioOfPatientsToDoctorssMinus + numP_conditionsMinus;
-                     let ressMinus = (Math.pow(sumsMinus, 1 / 2)).toFixed(3);
-                     sMinus.push(ressMinus);
+                    // tìm SMinus
+                    let numPatientsMinus = Math.pow((listCriteriaStandardized[i].patient - listAminus[0]), 2);
+                    let numDoctorsMinus = Math.pow((listCriteriaStandardized[i].doctor - listAminus[1]), 2);
+                    let numRatioOfPatientsToDoctorssMinus = Math.pow((listCriteriaStandardized[i].ratioOfPatientsToDoctors - listAminus[2]), 2);
+                    let numP_conditionsMinus = Math.pow((listCriteriaStandardized[i].p_condition - listAminus[3]), 2);
+                    let sumsMinus = numPatientsMinus + numDoctorsMinus + numRatioOfPatientsToDoctorssMinus + numP_conditionsMinus;
+                    let ressMinus = (Math.pow(sumsMinus, 1 / 2)).toFixed(3);
+                    sMinus.push(ressMinus);
                 }
-                
+
                 console.log("Step 4: S* and S-")
                 console.log(sStar);
                 console.log(sMinus);
-                
-            
+
+
 
                 // bước 5: tìm c*
                 var cStars = [];
@@ -188,36 +188,81 @@ let getAllRegionAndPatient = () => {
                 console.log(cStars);
 
 
-              
+
                 // bước này chỉ là để  là sửa đển in dữ liệu ra cái bảng thôi
-               var listDataResult = [];
+                var listDataResult = [];
                 for (let i = 0; i < listCriteriaStandardized.length; i++) {
 
                     var datResult = {
-                            "id":listCriteriaStandardized[i].id,
-                            "id_region":listCriteriaStandardized[i].id_region,
-                            "name_region": listCriteriaStandardized[i].name_region,
-                            "patient": listCriteriaStandardized[i].patient,
-                            "doctor": listCriteriaStandardized[i].doctor,
-                            "ratioOfPatientsToDoctors": listCriteriaStandardized[i].ratioOfPatientsToDoctors,
-                            "p_condition": listCriteriaStandardized[i].p_condition,
-                            "sStart_of_region": sStar[i],
-                            "sMinus_of_region": sMinus[i],
-                            "cStars_of_region": cStars[i],
-                    
+                        "id": listCriteriaStandardized[i].id,
+                        "id_region": listCriteriaStandardized[i].id_region,
+                        "name_region": listCriteriaStandardized[i].name_region,
+                        "patient": listCriteriaStandardized[i].patient,
+                        "doctor": listCriteriaStandardized[i].doctor,
+                        "ratioOfPatientsToDoctors": listCriteriaStandardized[i].ratioOfPatientsToDoctors,
+                        "p_condition": listCriteriaStandardized[i].p_condition,
+                        "sStart_of_region": sStar[i],
+                        "sMinus_of_region": sMinus[i],
+                        "cStars_of_region": cStars[i],
+
                     }
 
                     listDataResult.push(datResult);
                 }
-               
-                // xếp thứ tự theo sStar
-                listDataResultForsStar = [];
-                listDataResultForsStar =listDataResult;
-                listDataResultForsStar.sort(function(a, b){return a.sStart_of_region - b.sStart_of_region});
-                
 
-                //console.log(listDataResultForsStar);
-                resolve(listDataResult);
+               var listDataResultHaveAStartAndAmunisAndWeight =[];
+               listDataResultHaveAStartAndAmunisAndWeight = listDataResult.slice();
+
+                // bước này chỉ cho thằng A* VÀ A- và trọng sô vào array để in ra thôi
+                var dataAstart = {
+                    "name_region": "A*",
+                    "patient": listAstart[0],
+                    "doctor": listAstart[1],
+                    "ratioOfPatientsToDoctors": listAstart[2],
+                    "p_condition": listAstart[3]
+
+                }
+
+                var dataAmunis = {
+                    "name_region": "A-",
+                    "patient": listAminus[0],
+                    "doctor": listAminus[1],
+                    "ratioOfPatientsToDoctors": listAminus[2],
+                    "p_condition": listAminus[3]
+                }
+
+                var dataWeight = {
+                    "name_region": "Trọng Số",
+                    "patient": "0.1",
+                    "doctor": "0.1",
+                    "ratioOfPatientsToDoctors": "0.7",
+                    "p_condition":"0.1"
+                }
+
+
+                listDataResultHaveAStartAndAmunisAndWeight.push(dataAstart);
+                listDataResultHaveAStartAndAmunisAndWeight.push(dataAmunis);
+                listDataResultHaveAStartAndAmunisAndWeight.push(dataWeight);
+              
+
+
+
+                // xếp thứ tự theo sStar
+                chooseRegionBySstart = listDataResult.slice();
+                chooseRegionBySstart.sort(function (a, b) { return a.sStart_of_region - b.sStart_of_region });
+
+
+
+                // var chooseRegionByCstart = [];
+
+                chooseRegionBySminus = listDataResult.slice();
+                chooseRegionBySminus.sort(function (a, b) { return a.sMinus_of_region - b.sMinus_of_region });
+
+                chooseRegionByCstart = listDataResult.slice();
+                chooseRegionByCstart.sort(function (a, b) { return a.cStars_of_region - b.cStars_of_region });
+
+                resolve(listDataResultHaveAStartAndAmunisAndWeight);
+
             }
             else {
                 resolve(null);
@@ -228,12 +273,24 @@ let getAllRegionAndPatient = () => {
     }));
 };
 
-let chooseRegionBySstartd = () => {
+let chooseRegionBySstartFunsion = () => {
 
     return chooseRegionBySstart;
+}
+let chooseRegionBySminusFunsion = () => {
+
+    return chooseRegionBySminus.reverse();
+}
+
+let chooseRegionByCstartFunsion = () => {
+
+    return chooseRegionByCstart.reverse();
 }
 module.exports = {
 
     getAllRegionAndPatient: getAllRegionAndPatient,
+    chooseRegionBySstartFunsion: chooseRegionBySstartFunsion,
+    chooseRegionBySminusFunsion: chooseRegionBySminusFunsion,
+    chooseRegionByCstartFunsion: chooseRegionByCstartFunsion,
 
 }
