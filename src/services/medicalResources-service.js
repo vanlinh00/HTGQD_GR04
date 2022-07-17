@@ -247,10 +247,10 @@ let getAllRegionAndPatient = () => {
                     "p_condition": "0.3"
                 }
 
-
+                listDataResultHaveAStartAndAmunisAndWeight.push(dataWeight);
                 listDataResultHaveAStartAndAmunisAndWeight.push(dataAstart);
                 listDataResultHaveAStartAndAmunisAndWeight.push(dataAmunis);
-                listDataResultHaveAStartAndAmunisAndWeight.push(dataWeight);
+              
 
                 // xếp thứ tự theo sStar
                 chooseRegionBySstart = listDataResult.slice();
