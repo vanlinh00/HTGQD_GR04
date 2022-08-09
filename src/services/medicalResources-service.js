@@ -58,7 +58,7 @@ let getAllRegionAndPatient = () => {
                 for (let i = 0; i < allRegionAndPatient.length; i++) {
                     maxPatient = (maxPatient < allRegionAndPatient[i].patient) ? allRegionAndPatient[i].patient : maxPatient;
                     maxP_condition = (maxP_condition < allRegionAndPatient[i].p_condition) ? allRegionAndPatient[i].p_condition : maxP_condition;
-                    maxDoctor = (maxDoctor < allRegionAndPatient[i].doctor) ? allRegionAndPatient[i].doctor : maxDoctor;
+                   // maxDoctor = (maxDoctor < allRegionAndPatient[i].doctor) ? allRegionAndPatient[i].doctor : maxDoctor;
                     maxRatioOfPatientsToDoctors = (maxRatioOfPatientsToDoctors < allRegionAndPatient[i].ratioOfPatientsToDoctors) ? allRegionAndPatient[i].ratioOfPatientsToDoctors : maxRatioOfPatientsToDoctors;
                 }
 
@@ -69,10 +69,9 @@ let getAllRegionAndPatient = () => {
                         "id_region": allRegionAndPatient[i].id_region,
                         "name_region": allRegionAndPatient[i].name_region,
                         "patient": ((allRegionAndPatient[i].patient / maxPatient) * 0.1).toFixed(3),
-                        "doctor": (maxDoctor / allRegionAndPatient[i].doctor).toFixed(3),
+                        "doctor": 1 /allRegionAndPatient[i].doctor,
                         "ratioOfPatientsToDoctors": ((allRegionAndPatient[i].ratioOfPatientsToDoctors / maxRatioOfPatientsToDoctors) * 0.5).toFixed(3),
                         "p_condition": ((allRegionAndPatient[i].p_condition / maxP_condition) * 0.3).toFixed(3),
-
                     }
                     listCriteria.push(criteria);
                 }
